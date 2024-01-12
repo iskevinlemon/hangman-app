@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-
 String step1 = '''
 
 
@@ -38,8 +37,8 @@ ___________
 
 String step4 = '''
 ___________
-|        |
-|        |
+|         |
+|         |
 |
 |
 |
@@ -50,98 +49,106 @@ ___________
 
 String step5 = '''
 ___________
-|        |
-|        |
-|        O
-|      --|--
-|        |
-|       | |
+|         |
+|         |
+|         O
+|       --|--
+|         |
+|        | |
 |
 |__________
 ''';
 
-void main(){
+void main() {
 
-  File words = File("fruits.txt");
-  String textFile = words.readAsStringSync();
+  // String textFile = loadTxtFile("");
+
+  String textFile = loadTxtFile("fruits.txt");
 
   List<String> wordsList = textFile.split("\n");
 
   String randomWord = getRandomWord(wordsList);
   String randomWordObscured = replaceRandomLetters(randomWord);
 
-  int noOfGuess = -1;
+  int noOfGuess = 0;
   bool guessIsCorrect = false;
 
-  while (noOfGuess != 5) {
-    if (guessIsCorrect != true) {
-      // 1noOfGuess++;
+  printStep(noOfGuess);
+  print(randomWordObscured);
 
-      printStep(noOfGuess);      
+  // Get the user input
+  print("Enter your guess > ");
+  String? usersGuess = stdin.readLineSync();
 
-      print(randomWordObscured);
-      print("Enter your guess > ");
-      String? guess = stdin.readLineSync();
-
-      if(noOfGuess == 5){
-        if(guessIsCorrect){
-          print("You win !");
-        }
-        else{
-          print("GAME OVER !");
-        }
-      }
-
-      if(checkAnswer(randomWord, guess)) {
-        noOfGuess = 4;
-        guessIsCorrect = true;
-      } 
-      else {
-        print("Incorrect answer");
-        guessIsCorrect = false;
-        noOfGuess++;
-      }
-    } 
-    
-    // else {
-    //   print("Correct answer");
-    // }
-  }
-  
 }
 
-bool checkAnswer(String correctAnswer, String? userAnswer){
-  if(correctAnswer == userAnswer){
-    return true;
-  }
-  else{
-    return false;
-  }
+// Takes in a path for the text file.
+// Read the file from the given path and
+// return the result as a string
+String loadTxtFile(String filePath){
+  // TODO: add validation here to ensure that filePath isn't empty
+  // if filePath is empty, it will throw an exception in the console
+  // when the program is run
+  File words = File(filePath);
+  String textFile = words.readAsStringSync();
+  return textFile;
 }
 
+bool checkAnswer(String correctAnswer, String? userAnswer) {
+  // Convert user's input to lowercase for comparison
+  return correctAnswer.toLowerCase() == userAnswer?.toLowerCase();
+}
+
+// Print the current hangman step
 void printStep(int step) {
-  if (step == 1) {
+
+  // TODO: refactor this (maybe)
+  if (step == 0) {
     print(step1);
   }
-  if (step == 2) {
+  if (step == 1) {
     print(step2);
   }
-  if (step == 3) {
+  if (step == 2) {
     print(step3);
   }
-  if (step == 4) {
+  if (step == 3) {
     print(step4);
   }
-  if (step == 5) {
+  if (step == 4) {
     print(step5);
   }
+
+  // TODO: this doesn't seems correct :<
+  // switch (step) {
+  //   case 1:
+  //     print(step1);
+  //   case 2:
+  //     print(step2);
+  //   case 3:
+  //     print(step3);
+  //   case 4:
+  //     print(step4);
+  //   case 5:
+  //     print(step5);
+  // }
+
 }
 
-String getRandomWord(List<String> listOfString){
+// Takes in a List and shuffle it,
+// and return first item in the list
+// after it was shuffled
+// E.g. input: ["a", "b", "c", "d"]
+// E.g. output: "c"
+String getRandomWord(List<String> listOfString) {
   listOfString.shuffle();
   return listOfString[0];
 }
 
+// Replace random letters in a given string with a _
+// and return the result
+// E.g. input: watermelon
+// E.g. output: w___r___o_
 String replaceRandomLetters(String word) {
   if (word.isEmpty) {
     return word;
