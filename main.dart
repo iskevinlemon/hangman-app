@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-String step1 = '''
+String failedAttempt1 = '''
 
 
 
@@ -12,7 +12,7 @@ String step1 = '''
 |__________
 ''';
 
-String step2 = '''
+String failedAttempt2 = '''
 |      
 |        
 |       
@@ -23,7 +23,7 @@ String step2 = '''
 |__________
 ''';
 
-String step3 = '''
+String failedAttempt3 = '''
 ___________
 |
 |
@@ -35,7 +35,7 @@ ___________
 |__________
 ''';
 
-String step4 = '''
+String failedAttempt4 = '''
 ___________
 |         |
 |         |
@@ -47,7 +47,7 @@ ___________
 |__________
 ''';
 
-String step5 = '''
+String failedAttempt5 = '''
 ___________
 |         |
 |         |
@@ -59,26 +59,56 @@ ___________
 |__________
 ''';
 
+String successAttempt = '''
+___________
+|         
+|         
+|         
+|
+|         O
+|       >-|-<
+|         |
+|________|_|_ 
+''';
+
 void main() {
 
+  // Simulate an empty filePath
   // String textFile = loadTxtFile("");
 
   String textFile = loadTxtFile("fruits.txt");
 
   List<String> wordsList = textFile.split("\n");
 
+  int noOfFailedAttempt = 0;
+
   String randomWord = getRandomWord(wordsList);
   String randomWordObscured = replaceRandomLetters(randomWord);
 
-  int noOfGuess = 0;
-  bool guessIsCorrect = false;
+  while(noOfFailedAttempt != 5){
+    
+    print(randomWordObscured);
 
-  printStep(noOfGuess);
-  print(randomWordObscured);
+    // Get the user input
+    print("Enter your guess (type in full word) > ");
+    String? usersGuess = stdin.readLineSync();
 
-  // Get the user input
-  print("Enter your guess > ");
-  String? usersGuess = stdin.readLineSync();
+    if(checkAnswer(randomWord, usersGuess)){
+      print("Correct !");
+      print(successAttempt);
+      break;
+    }
+    else{
+      noOfFailedAttempt++;
+      printFailedAttempt(noOfFailedAttempt); // should not print anything as it is 0
+
+      if(noOfFailedAttempt == 5){
+        print("GAME OVER !");
+      }
+
+    }
+
+  }
 
 }
 
@@ -86,53 +116,42 @@ void main() {
 // Read the file from the given path and
 // return the result as a string
 String loadTxtFile(String filePath){
+
   // TODO: add validation here to ensure that filePath isn't empty
   // if filePath is empty, it will throw an exception in the console
   // when the program is run
+
   File words = File(filePath);
   String textFile = words.readAsStringSync();
   return textFile;
 }
 
+// Compare two given parameters (correctAnswer and userAnswer)
+// returns true if both parameters match
+// returns false if both parameters match
 bool checkAnswer(String correctAnswer, String? userAnswer) {
   // Convert user's input to lowercase for comparison
   return correctAnswer.toLowerCase() == userAnswer?.toLowerCase();
 }
 
 // Print the current hangman step
-void printStep(int step) {
-
+void printFailedAttempt(int attempt) {
   // TODO: refactor this (maybe)
-  if (step == 0) {
-    print(step1);
+  if (attempt == 1) {
+    print(failedAttempt1);
   }
-  if (step == 1) {
-    print(step2);
+  if (attempt == 2) {
+    print(failedAttempt2);
   }
-  if (step == 2) {
-    print(step3);
+  if (attempt == 3) {
+    print(failedAttempt3);
   }
-  if (step == 3) {
-    print(step4);
+  if (attempt == 4) {
+    print(failedAttempt4);
   }
-  if (step == 4) {
-    print(step5);
+  if (attempt == 5) {
+    print(failedAttempt5);
   }
-
-  // TODO: this doesn't seems correct :<
-  // switch (step) {
-  //   case 1:
-  //     print(step1);
-  //   case 2:
-  //     print(step2);
-  //   case 3:
-  //     print(step3);
-  //   case 4:
-  //     print(step4);
-  //   case 5:
-  //     print(step5);
-  // }
-
 }
 
 // Takes in a List and shuffle it,
