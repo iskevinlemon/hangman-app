@@ -9,7 +9,7 @@ String failedAttempt1 = '''
 
 
 
-|__________
+___________
 ''';
 
 String failedAttempt2 = '''
@@ -73,19 +73,29 @@ ___________
 
 void main() {
 
+  int noOfFailedAttempt = 0;
+  String randomWord = "";
+  String randomWordObscured = "";
+
+  // Used for dev
+  bool canStart = true;
+
   // Simulate an empty filePath
   // String textFile = loadTxtFile("");
 
-  String textFile = loadTxtFile("fruits.txt");
+  // String textFile = loadTxtFile("fruits.txt");
+  String textFile = loadTxtFile("fruits_wiki.txt");
 
   List<String> wordsList = textFile.split("\n");
 
-  int noOfFailedAttempt = 0;
+  // randomWord = getRandomWord(wordsList);
 
-  String randomWord = getRandomWord(wordsList);
-  String randomWordObscured = replaceRandomLetters(randomWord);
+  // Convert randomWord to lowercase
+  randomWord = lower(getRandomWord(wordsList));
+  randomWordObscured = replaceRandomLetters(randomWord);
 
-  while(noOfFailedAttempt != 5){
+  // On every run of the program, validate that textFile isn't empty
+  while(noOfFailedAttempt != 5 && textFile != "" && canStart){
     
     print(randomWordObscured);
 
@@ -117,13 +127,30 @@ void main() {
 // return the result as a string
 String loadTxtFile(String filePath){
 
-  // TODO: add validation here to ensure that filePath isn't empty
-  // if filePath is empty, it will throw an exception in the console
-  // when the program is run
+  File words;
+  String textFile;
+  String result = "";
+  try{
+    words = File(filePath);
+    textFile = words.readAsStringSync();
+    result = textFile;
+  }
+  catch(e){
+    print(e); // Print actual error
 
-  File words = File(filePath);
-  String textFile = words.readAsStringSync();
-  return textFile;
+    // Print if .txt couldn't be loaded
+    if(result == ""){
+      print("Error:  failed to load .txt file ");
+    }
+
+  }
+
+  return result;
+}
+
+// Shorthand function for .toLowerCase()
+String lower(String word){
+  return word.toLowerCase();
 }
 
 // Compare two given parameters (correctAnswer and userAnswer)
@@ -136,7 +163,6 @@ bool checkAnswer(String correctAnswer, String? userAnswer) {
 
 // Print the current hangman step
 void printFailedAttempt(int attempt) {
-  // TODO: refactor this (maybe)
   if (attempt == 1) {
     print(failedAttempt1);
   }
