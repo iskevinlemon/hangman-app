@@ -110,7 +110,10 @@ void main() {
     }
     else{
       noOfFailedAttempt++;
-      printFailedAttempt(noOfFailedAttempt); // should not print anything as it is 0
+      
+			// On first run, it should not print anything as it is 0
+			// Run on subsequent wrong guesses
+      printFailedAttempt(noOfFailedAttempt); 
 
       if(noOfFailedAttempt == 5){
         print("GAME OVER !");
@@ -130,6 +133,7 @@ String loadTxtFile(String filePath){
   File words;
   String textFile;
   String result = "";
+
   try{
     words = File(filePath);
     textFile = words.readAsStringSync();
@@ -142,7 +146,6 @@ String loadTxtFile(String filePath){
     if(result == ""){
       print("Error:  failed to load .txt file ");
     }
-
   }
 
   return result;
