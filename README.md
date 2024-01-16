@@ -3,7 +3,7 @@ Mini hangman console game I made using Dart.
 
 ## Tutorial
 The step by step tutorial is here:
-<a href="https://kevinhoward.notion.site/kevinhoward/Hangman-with-Dart-b9bd408dd92847c1bf490ae29192496e" target="_blank">Hangman Dart Tutorial</a>
+<a href="https://kevinhoward.notion.site/kevinhoward/Hangman-with-Dart-b9bd408dd92847c1bf490ae29192496e" target="_blank">Hangman Dart Tutorial</a>.
 
 ## Features
 <ul>
